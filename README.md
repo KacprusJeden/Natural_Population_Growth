@@ -91,15 +91,6 @@ Wykonuje trzy kroki:
 2. Wysyła dane do ChatGPT i zapisuje raport w `reports/report.txt`.
 3. Generuje wykresy w katalogu `plots/`.
 
-### Tylko pobieranie danych
-
-```bash
-python main.py
-```
-
-Pobiera dane z BDL, zapisuje je w `data/` i wyświetla krótkie podsumowanie w konsoli.
-
----
 
 ## Struktura projektu
 
