@@ -106,7 +106,7 @@ Natural_Population_Growth/
 ├── tests/
 │   ├── test_download_statistics.py
 │   └── test_llm_analysis.py
-├── main.py                      # Skrypt do samodzielnego pobierania danych
+├
 ├── requirements.txt             # Zależności projektu
 └── README.md                    # Ten plik
 ```
