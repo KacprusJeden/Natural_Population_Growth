@@ -1,0 +1,37 @@
+# Raport analizy przyrostu naturalnego w Polsce i województwach (2002-2025)
+
+## 1. Wprowadzenie
+Celem niniejszego raportu jest analiza danych dotyczących przyrostu naturalnego na 1000 ludności w Polsce oraz w poszczególnych województwach w latach 2002-2025. Analiza obejmuje identyfikację trendów, porównanie województw oraz wskazanie lat o największych zmianach.
+
+## 2. Trendy ogólne
+- W latach 2002-2025 Polska doświadczyła ogólnego spadku przyrostu naturalnego, z wartości dodatnich w pierwszej części analizy do wartości ujemnych w ostatnich latach.
+- W 2002 roku przyrost naturalny wynosił -0.15, a w 2025 roku osiągnie wartość -4.48.
+- Największy spadek przyrostu naturalnego miał miejsce w latach 2020-2021, kiedy to wartość ta zmniejszyła się z -3.20 do -4.95.
+
+## 3. Analiza województw
+### 3.1. Województwa z najwyższym przyrostem naturalnym
+- **POMORSKIE**: W 2002 roku przyrost wynosił 2.02, a w 2019 roku osiągnął wartość 1.54. W 2020 roku nastąpił drastyczny spadek do -0.5.
+- **MAŁOPOLSKIE**: W 2002 roku przyrost wynosił 1.4, jednak w 2021 roku spadł do -2.17.
+
+### 3.2. Województwa z najniższym przyrostem naturalnym
+- **ŁÓDZKIE**: W 2021 roku osiągnęło najniższą wartość -7.67, co wskazuje na poważny kryzys demograficzny.
+- **ŚLĄSKIE**: Również doświadczyło znacznego spadku, osiągając wartość -7.15 w 2021 roku.
+
+### 3.3. Województwa z największymi zmianami
+- **DOLNOŚLĄSKIE**: Zmiana z -1.04 w 2002 roku do -5.12 w 2025 roku.
+- **KUJAWSKO-POMORSKIE**: Zmiana z 0.53 w 2002 roku do -5.65 w 2025 roku.
+
+## 4. Lata o największych zmianach
+- **2020**: Zdecydowany spadek przyrostu naturalnego w większości województw, co może być związane z pandemią COVID-19.
+- **2021**: Największy spadek w województwach takich jak Łódzkie i Śląskie, co wskazuje na pogłębiający się kryzys demograficzny.
+
+## 5. Kluczowe wnioski
+- Polska zmaga się z rosnącym problemem ujemnego przyrostu naturalnego, co może prowadzić do poważnych konsekwencji demograficznych i społecznych.
+- Województwa takie jak Łódzkie i Śląskie wymagają szczególnej uwagi i działań w celu poprawy sytuacji demograficznej.
+- Wzrost ujemnego przyrostu naturalnego w 2020 i 2021 roku może być częściowo związany z pandemią, co wymaga dalszej analizy i monitorowania.
+
+## 6. Rekomendacje
+- Wprowadzenie polityk prorodzinnych oraz wsparcia dla młodych rodzin w celu zwiększenia liczby urodzeń.
+- Monitorowanie sytuacji demograficznej w poszczególnych województwach oraz dostosowywanie strategii rozwoju regionalnego do potrzeb demograficznych.
+
+Niniejszy raport stanowi podstawę do dalszych działań w zakresie polityki demograficznej w Polsce.

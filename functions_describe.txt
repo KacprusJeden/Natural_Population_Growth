@@ -1,0 +1,125 @@
+MODUL: src/download_statistics.py
+
+Opis modulu:
+Modul odpowiada za pobieranie danych o przyroscie naturalnym na 1000 ludnosci z API Banku Danych Lokalnych, przetwarzanie odpowiedzi API do postaci DataFrame oraz zapis danych do plikow CSV w katalogu data/. Obsluguje dwa poziomy agregacji terytorialnej: cala Polske oraz wojewodztwa. Logika modulu jest odporna na brak klucza API, puste odpowiedzi i bledy pojedynczego poziomu agregacji.
+
+Glowne odpowiedzialnosci:
+- zbudowanie naglowkow HTTP z opcjonalnym kluczem BDL_CLIENT_ID,
+- pobranie wszystkich stron wynikow z API dla danej zmiennej i poziomu agregacji,
+- przefiltrowanie danych do lat 2002-2025,
+- konwersja rekordow do jednej, spojnej struktury tabelarycznej,
+- rozdzielenie danych na osobne ramki per rok,
+- zapis ramek do plikow CSV zgodnie z konwencja projektu.
+
+_headers()
+Opis:
+Buduje slownik naglowkow HTTP dla zapytan do API BDL.
+
+Wejscie:
+- brak argumentow
+
+Wyjscie:
+- dict[str, str] zawierajacy zawsze klucz Accept=application/json
+- jesli w zmiennej srodowiskowej BDL_CLIENT_ID istnieje klucz API, funkcja dolacza naglowek X-ClientId
+
+Uwagi:
+- funkcja nie wykonuje zadnych zapytan sieciowych
+- brak zmiennej srodowiskowej nie jest bledem
+
+get_variable_data(unit_level, page_size=100)
+Opis:
+Pobiera wszystkie strony wynikow API dla zmiennej przyrostu naturalnego i wskazanego poziomu agregacji terytorialnej.
+
+Wejscie:
+- unit_level: int, poziom agregacji (0 dla Polski, 2 dla wojewodztw)
+- page_size: int, liczba jednostek na strone; domyslnie 100
+
+Wyjscie:
+- list[dict] z rekordami API w postaci:
+  {"id": ..., "name": ..., "values": [...]}
+
+Zachowanie:
+- wykonuje kolejne zapytania GET do endpointu /data/by-variable/{VAR_NATURAL_GROWTH_PER_1000}
+- paginuje po polu links.next
+- dodaje opoznienie REQUEST_DELAY_S pomiedzy kolejnymi stronami
+- konczy prace, gdy w odpowiedzi nie ma kolejnej strony
+
+Mozliwe bledy:
+- propaguje requests.RequestException, jesli zapytanie HTTP nie powiedzie sie lub status odpowiedzi jest bledny
+
+to_dataframe(records)
+Opis:
+Konwertuje liste rekordow API do dlugiej ramki danych pandas.DataFrame zgodnej z konwencja projektu.
+
+Wejscie:
+- records: list[dict], rekordy zwrocone przez API
+
+Wyjscie:
+- pandas.DataFrame z kolumnami:
+  rok, kod_teryt, jednostka, przyrost_naturalny_na_1000
+
+Zachowanie:
+- pomija wpisy z val=None
+- pomija lata spoza zakresu YEAR_FIRST-YEAR_LAST
+- rzutuje rok na int, a wartosc przyrostu na float
+- sortuje wynik po kolumnach rok i jednostka
+- dla pustego wejscia lub braku poprawnych danych zwraca pusty DataFrame z oczekiwanymi kolumnami
+
+Mozliwe bledy:
+- moze rzucic ValueError lub TypeError, jesli rekordy maja niepoprawny format roku lub wartosci
+
+fetch_natural_growth_stats()
+Opis:
+Pobiera dane o przyroscie naturalnym dla wojewodztw i Polski, a nastepnie grupuje je do osobnych DataFrame per rok.
+
+Wejscie:
+- brak argumentow
+
+Wyjscie:
+- dict[int, pandas.DataFrame], gdzie kluczem jest rok, a wartoscia ramka z danymi dla tego roku
+
+Zachowanie:
+- wywoluje get_variable_data() i to_dataframe() osobno dla wojewodztw oraz dla Polski
+- w przypadku pustych danych dla danego poziomu loguje komunikat i przechodzi dalej
+- w przypadku bledu zapytania lub bledu przetwarzania loguje komunikat i nie przerywa calego procesu
+- laczy wszystkie poprawnie pobrane dane i dzieli je na osobne ramki per rok
+- jesli nie udalo sie pobrac zadnych danych, zwraca pusty slownik
+
+save_to_csv(data)
+Opis:
+Zapisuje slownik ramek danych do plikow CSV w katalogu data/.
+
+Wejscie:
+- data: dict[int, pandas.DataFrame], gdzie kluczem jest rok
+
+Wyjscie:
+- list[pathlib.Path] zawierajaca sciezki do plikow, ktore udalo sie zapisac
+
+Zachowanie:
+- tworzy katalog data/, jesli jeszcze nie istnieje
+- zapisuje pliki pod nazwa przyrost_naturalny_pl_{rok}.csv
+- zapisuje pliki w kodowaniu utf-8 bez indeksu
+- jesli zapis pojedynczego pliku sie nie powiedzie, loguje blad i kontynuuje pozostale zapisy
+
+Mozliwe bledy:
+- OSError podczas zapisu pojedynczego pliku jest obslugiwany lokalnie i nie przerywa calej funkcji
+
+download_and_save()
+Opis:
+Uruchamia pelny pipeline pobrania danych i zapisu do CSV.
+
+Wejscie:
+- brak argumentow
+
+Wyjscie:
+- dict[int, pandas.DataFrame] z pobranymi danymi per rok
+
+Zachowanie:
+- loguje zakres lat, ktore beda pobierane
+- wywoluje fetch_natural_growth_stats()
+- jesli nic nie pobrano, zwraca pusty slownik i nie probuje zapisu
+- jesli dane istnieja, wywoluje save_to_csv() i zwraca pobrany slownik
+
+Uwagi:
+- to jest glowny punkt wejscia modulu
+- modul moze byc uruchomiony jako skrypt bezposrednio przez sekcje if __name__ == "__main__"
